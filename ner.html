@@ -1,0 +1,290 @@
+<html>
+<head>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/highcharts.js"></script>
+<script src="js/modules/data.js"></script>
+<script src="js/modules/drilldown.js"></script>
+<script>
+
+
+function populateCharts(dateString, url){
+	var fileString = "json/" + dateString + ".json";
+	var loopMany = true;
+	if(url != ""){
+	    loopMany = false;
+	}
+	//file exists
+	$.getJSON( fileString, function( data ) {
+		var organizationCount = 0;
+		var personCount = 0;
+		var locationCount = 0;
+		var miscCount = 0;
+		var durationCount = 0;
+		var setCount = 0;
+		var timeCount = 0;
+		var ordinalCount = 0;
+		var numberCount = 0;
+		var dateCount = 0;
+		
+		var organizationData = [];
+		var locationData = [];
+		var personData = [];
+		var miscData = [];
+		var ordinalData = [];
+		$.each( data, function( key, val ) {
+			if(loopMany || key === url){
+				var ner = val.NER;
+				var organization = ner.ORGANIZATION;
+				var person = ner.PERSON;
+				var location = ner.LOCATION;
+				var misc = ner.MISC;
+				var duration = ner.DURATION;
+				var set = ner.SET;
+				var time = ner.TIME;
+				var ordinal = ner.ORDINAL;
+				var number = ner.NUMBER;
+				var date = ner.DATE;
+				if(organization !== null && typeof organization !== 'undefined'){
+					organizationCount++;
+					$.each(organization, function(key, val){
+						var pushData = true;
+						$.each(organizationData, function(i,arr){
+							if(arr[0]==key){
+								arr[1] = arr[1] + val;
+								pushData = false;
+								return false;
+							}
+						});
+						if(pushData){
+							organizationData.push([key,val]);
+						}
+					});
+				}
+				if(person !== null && typeof person !== 'undefined'){
+					personCount++;
+					$.each(person, function(key, val){
+						var pushData = true;
+						$.each(personData, function(i,arr){
+							if(arr[0]==key){
+								arr[1] = arr[1] + val;
+								pushData = false;
+								return false;
+							}
+						});
+						if(pushData){
+							personData.push([key,val]);
+						}
+					});
+				}
+				if(location !== null && typeof location !== 'undefined'){
+					locationCount++;
+					$.each(location, function(key, val){
+						var pushData = true;
+						$.each(locationData, function(i,arr){
+							if(arr[0]==key){
+								arr[1] = arr[1] + val;
+								pushData = false;
+								return false;
+							}
+						});
+						if(pushData){
+							locationData.push([key,val]);
+						}
+					});
+				}
+				if(misc !== null && typeof misc !== 'undefined'){
+					miscCount++;
+					$.each(misc, function(key, val){
+						var pushData = true;
+						$.each(miscData, function(i,arr){
+							if(arr[0]==key){
+								arr[1] = arr[1] + val;
+								pushData = false;
+								return false;
+							}
+						});
+						if(pushData){
+							miscData.push([key,val]);
+						}
+					});
+				}
+				if(ordinal !== null && typeof ordinal !== 'undefined'){
+					ordinalCount++;
+				}
+				if(duration !== null && typeof duration !== 'undefined'){
+					durationCount++;
+				}
+				if(set !== null && typeof set !== 'undefined'){
+					setCount++;
+				}
+				if(time !== null && typeof time !== 'undefined'){
+					timeCount++;
+				}
+				if(date !== null && typeof date !== 'undefined'){
+					dateCount++;
+				}
+				if(number !== null && typeof number !== 'undefined'){
+					numberCount++;
+				}
+			}
+		});	
+		var total = organizationCount 
+			+ personCount
+			+ locationCount
+			+ miscCount
+			+ durationCount
+			+ setCount
+			+ timeCount
+			+ ordinalCount
+			+ dateCount
+			+ numberCount;
+			
+			
+			// Create the chart
+		$('#container').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'NER for ' + dateString
+			},
+			subtitle: {
+				text: 'Click the columns to view name entities. Source: http://www.nation.co.ke'
+			},
+			xAxis: {
+				type: 'category'
+			},
+			yAxis: {
+				title: {
+					text: 'Total frequency'
+				}
+
+			},
+			legend: {
+				enabled: false
+			},
+			plotOptions: {
+				series: {
+					borderWidth: 0,
+					dataLabels: {
+						enabled: true,
+						//format: '{point.y:.1f}%'
+						format: '{point.y}'
+					}
+				}
+			},
+
+			tooltip: {
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				//pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> mentions<br/>'
+			},
+
+			series: [{
+				name: "NE",
+				colorByPoint: true,
+				data: [{
+					name: "Organization",
+					//y: (organizationCount/total)*100,
+					y: organizationCount,
+					drilldown: "Organization"
+				}, {
+					name: "Location",
+					//y: (locationCount/total)*100,
+					y: locationCount,
+					drilldown: "Location"
+				}, {
+					name: "Person",
+					//y: (personCount/total)*100,
+					y: personCount,
+					drilldown: "Person"
+				}, {
+					name: "Misc",
+					//y: (miscCount/total)*100,
+					y: miscCount,
+					drilldown: "Misc"
+				}, {
+					name: "Ordinal",
+					//y: (ordinalCount/total)*100,
+					y: ordinalCount,
+					drilldown: "null"
+				}, {
+					name: "Duration",
+					//y: (durationCount/total)*100,
+					y: durationCount,
+					drilldown: "null"
+				}, {
+					name: "Number",
+					//y: (numberCount/total)*100,
+					y: numberCount,
+					drilldown: "null"
+				}, {
+					name: "Date",
+					//y: (dateCount/total)*100,
+					y: dateCount,
+					drilldown: "null"
+				}, {
+					name: "Set",
+					//y: (setCount/total)*100,
+					y: setCount,
+					drilldown: "null"
+				}, {
+					name: "Time",
+					//y: (timeCount/total)*100,
+					y: timeCount,
+					drilldown: "null"
+				}]
+			}],
+			drilldown: {
+				series: [{
+					name: "Organization",
+					id: "Organization",
+					data: organizationData
+				}, {
+					name: "Location",
+					id: "Location",
+					data: locationData
+				}, {
+					name: "Person",
+					id: "Person",
+					data: personData
+				}, {
+					name: "Misc",
+					id: "Misc",
+					data: miscData
+				}]
+			}
+		});
+	});
+}
+
+$(function () {
+	var d = new Date();
+	var month = d.getMonth()+1;
+	var day = d.getDate();
+	var year = d.getFullYear();
+
+	var dateToday =(('' + day).length < 2 ? '0' : '') + day + "-" + (('' + month).length < 2 ? '0' : '') + month + "-" + year;
+    populateCharts(dateToday, "");
+	$("#datepicker").datepicker({
+		onSelect: function(dateText, inst) { 
+			var dateAsString = dateText; //the first parameter of this function
+			//var dateAsObject = $(this).datepicker( 'getDate' ); //the getDate method
+			var strArr = dateAsString.split("/");
+			var newDateString = strArr[1] + "-" + strArr[0] + "-" + strArr[2];
+			//console.log(newDateString);
+			populateCharts(newDateString);
+		}
+	});
+});
+</script>
+</head>
+<body>
+<p style="float:right;">Date: <input type="text" id="datepicker"></p>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+</body>
+</html>
