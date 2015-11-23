@@ -1,0 +1,45 @@
+/*h2*/
+h3{
+	font-family: 'ColfaxRegular',Helvetica,sans-serif;
+	font-weight: 900;
+}
+
+.articles{
+	max-width: 700px;
+	margin: 0 auto;
+}
+
+.article{
+	border-bottom: 1px solid #dddddd;
+    display: block;
+}
+
+a {
+    text-decoration: none !important;
+}
+/*span*/
+span{
+	font-size:15px;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.locations{
+	background-color: #5C5C61;
+}
+
+.people{
+	background-color: #A9FF96;
+}
+
+.miscs{
+	background-color: #FFBC75;
+}
+
+.organizations{
+	background-color:#7CB5EC;
+}
+
+#date{
+	float:right;
+}

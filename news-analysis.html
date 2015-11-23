@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery-ui.js"></script>
+	<!--<script src="js/highcharts.js"></script>-->
+	<script src="js/maps/highmaps.js"></script>
+	<script src="js/modules/data.js"></script>
+	<script src="js/modules/drilldown.js"></script>
+    <script src="js/modules/exporting.js"></script>
+	<script src="js/ner.js"></script>
+	<script src="js/ner-map.js"></script>
+<title>News Analysis</title>
+<style>
+#main{
+	width: 875px;
+	height: 600px;
+	margin: auto;
+}
+#left-column{
+	float: left;
+	width: 275px;
+	height: inherit;
+}
+#date{
+	width: inherit;
+}
+.articles{
+	width: 255px;
+	height: 550px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 20px;
+}
+#right-column{
+    padding-top: 15px;
+	width: 575px;
+	margin-left: 260px;
+	height: inherit;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+#map {
+	height: 500px;
+	width: 560px;
+	margin: 0 auto;
+}
+.summary{
+	text-align: justify;
+}
+.loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+}
+#bar-graph{
+	height: 500px;
+	width: 560px;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body>
+<div id="main">
+<div id="left-column">
+<div id="date">
+<p>Date: <input id="datepicker" type="text" /></p>
+</div>
+<div class="articles"></div>
+</div>
+<div id="right-column">
+<div id="map"></div>
+<div id="bar-graph"></div>
+</div>
+</div>
+</body>
+</html>
