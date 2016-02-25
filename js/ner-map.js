@@ -3,9 +3,11 @@ $(function () {
         // data is a JavaScript object now. Handle it as such
         Highcharts.maps["countries/ke/ke-all"] = jsondata;
 		// Prepare demo data
+		$.getJSON("")
+		
 		var data = [
 			{
-				"code": "Turkana",
+				"code": "Murang'a",
 				"value": 2
 			},
 			{
@@ -19,6 +21,10 @@ $(function () {
 			{
 				"code": "Kiambu",
 				"value": 10
+			},
+			{
+				"code": "Kisumu",
+				"value": 5
 			}
 		];
 

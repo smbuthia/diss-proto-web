@@ -262,6 +262,87 @@
 		});
 	}
 
+	function fillMap(dateString){
+		$.getJSON("js/mapdata/countries/ke/kenya-counties.json", function(jsondata) {
+			// data is a JavaScript object now. Handle it as such
+			Highcharts.maps["countries/ke/ke-all"] = jsondata;
+			// Prepare demo data
+			var fileString = "json/counties-" + dateString + ".json";
+			$.getJSON(fileString, function(countiesData) {
+				var jsonObj = [];
+				$.each(countiesData, function(key, val){
+					var item = {};
+					item["code"] = key;
+					item["value"] = val;
+                    jsonObj.push(item);					
+				});
+				var data = jsonObj;
+				/*
+				var data = [
+					{
+						"code": "Murang'a",
+						"value": 2
+					},
+					{
+						"code": "Nairobi",
+						"value": 1
+					},
+					{
+						"code": "Mombasa",
+						"value": 2
+					},
+					{
+						"code": "Kiambu",
+						"value": 10
+					},
+					{
+						"code": "Kisumu",
+						"value": 5
+					}
+				];*/
+
+				// Initiate the chart
+				$('#map').highcharts('Map', {
+
+					title : {
+						text : 'News Topic Distribution'
+					},
+
+					subtitle : {
+						text : 'Source map: <a href="#">Kenya</a>'
+					},
+
+					mapNavigation: {
+						enabled: true,
+						buttonOptions: {
+							verticalAlign: 'bottom'
+						}
+					},
+
+					colorAxis: {
+						min: 0
+					},
+
+					series : [{
+						data : data,
+						mapData: Highcharts.maps['countries/ke/ke-all'],
+						joinBy: ['name','code'],
+						name: 'No. of stories',
+						states: {
+							hover: {
+								color: '#BADA55'
+							}
+						},
+						dataLabels: {
+							enabled: true,
+							format: '{point.properties.name}'
+						}
+					}]
+				});
+			});
+		});
+	}
+	
 	$(function () {
 		var d = new Date();
 		var month = d.getMonth()+1;
@@ -270,6 +351,7 @@
 
 		var dateToday =(('' + day).length < 2 ? '0' : '') + day + "-" + (('' + month).length < 2 ? '0' : '') + month + "-" + year;
 		populateCharts(dateToday, "");
+		fillMap(dateToday);
 		$("#datepicker").datepicker({
 			onSelect: function(dateText, inst) { 
 				var dateAsString = dateText; //the first parameter of this function
@@ -278,6 +360,7 @@
 				var newDateString = strArr[1] + "-" + strArr[0] + "-" + strArr[2];
 				//console.log(newDateString);
 				populateCharts(newDateString,"");
+				fillMap(newDateString);
 			}
 		});
 	});
