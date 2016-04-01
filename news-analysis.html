@@ -19,32 +19,19 @@
 	height: 600px;
 	margin: auto;
 }
-#left-column{
-	float: left;
-	width: 300px;
-	height: inherit;
-}
 #date{
 	width: inherit;
 }
 .articles{
-	width: 300px;
-	height: 550px;
+	width: 600px;
+	height: 250px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	padding-right: 20px;
-	background-color: grey;
-}
-#right-column{
-    padding-top: 15px;
-	width: 575px;
-	margin-left: 260px;
-	height: inherit;
-	overflow-y: auto;
-	overflow-x: hidden;
+	background-color: none;
 }
 #map {
-	height: 500px;
+	height: 600px;
 	width: 560px;
 	margin: 0 auto;
 }
@@ -64,17 +51,13 @@
 </style>
 </head>
 <body>
-<div id="main">
-<div id="left-column">
-<div id="date">
-<p>Date: <input id="datepicker" type="text" /></p>
-</div>
-<div class="articles"></div>
-</div>
-<div id="right-column">
-<div id="map"></div>
-<div id="bar-graph"></div>
-</div>
-</div>
+	<div id="main">
+		<div id="date">
+			<p>Date: <input id="datepicker" type="text" /></p>
+		</div>
+		<div id="map"></div>
+		<div id="bar-graph"></div>
+		<div class="articles"></div>
+	</div>
 </body>
 </html>
